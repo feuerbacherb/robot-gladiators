@@ -71,17 +71,26 @@ console.log(playerInfo.name, playerInfo.attack, playerInfo.health);
 
 
 var fight = function(enemy) {
+   // keep track of who goes first
+   var isPlayerTurn = true;
+
+   if (Math.random() > 5){
+     isPlayerTurn = false;
+   }
+
    console.log(enemy);
    while (playerInfo.health > 0 && enemy.health > 0) {
-      // ask user if they'd liked to fight or run
-      fightOrSkip();
-  
-      // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
-      var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-      enemy.health = Math.max(0, enemy.health - damage);
-      console.log(
-        playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
-      );
+      if (isPlayerTurn) {
+        // ask user if they'd liked to fight or run
+        if(fightOrSkip()) {
+          break;
+        }
+        // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
+        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+        enemy.health = Math.max(0, enemy.health - damage);
+        console.log(
+          playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
+        );
   
       // check enemy's health
       if (enemy.health <= 0) {
@@ -113,7 +122,11 @@ var fight = function(enemy) {
         window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
       }
     }
-
+  
+    // switch turn order for next round
+    isPlayerTurn - !isPlayerTurn;
+  
+  }
 };
 
 // function to generate a random numeric value
